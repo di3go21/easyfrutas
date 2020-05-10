@@ -32,7 +32,7 @@
 
 					<li><a href="Login?">Log In</a></li>
 
-					<li><a href="admin?action=login">REGÍSTRATE!!</a></li>
+					<li><a href="Registro?action=nuevoReg">REGÍSTRATE!!</a></li>
 				</ul>
 			</nav>
 		</div>

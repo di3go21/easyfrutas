@@ -40,6 +40,50 @@ public class UsuarioDao {
 		}
 		
 	}
+
+	public boolean existeUsuario(String email) {
+		String sql = "select * from eusuario where asemail=?";
+		
+		try {
+			PreparedStatement ps =conn.getConnection().prepareStatement(sql);
+			ps.setString(1, email);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next())
+				return true;
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		
+		return false;
+	}
+
+	public void registraNuevoUsuario(Usuario usu) {
+String sql = "insert into eusuario (asnombre,asapeliido,asemail,ascontrasenia,asdireccion,astelefono,adfechareg,ahhorareg) values(?,?,?,md5(?),?,?,?,?)";
+		
+		try {
+			PreparedStatement ps =conn.getConnection().prepareStatement(sql);
+			ps.setString(1, usu.getNombre());
+			ps.setString(2, usu.getApellido());
+			ps.setString(3, usu.getEmail());
+			ps.setString(4, usu.getContrasenia());
+			ps.setString(5, usu.getDireccion());
+			ps.setString(6, usu.getTelefono());
+			ps.setString(7, usu.getFechaReg());
+			ps.setString(8, usu.getHoraReg());
+			
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			System.out.println("error al insertar usuario");
+			e.printStackTrace();
+		}	
+		
+		
+	}
+
 	
 	
 
