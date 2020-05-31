@@ -22,7 +22,7 @@ public class UsuarioDao {
 			ps.setString(2, pass);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-			Usuario user = new Usuario(rs.getString(1));
+			Usuario user = new Usuario(rs.getInt(1));
 			user.setNombre(rs.getString(2));
 			user.setApellido(rs.getString(3));
 			user.setEmail(email);

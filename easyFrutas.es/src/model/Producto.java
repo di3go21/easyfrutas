@@ -1,5 +1,6 @@
 package model;
 
+
 public class Producto {
 	
 	private int k;
@@ -47,8 +48,31 @@ public class Producto {
 	public String toString() {
 		return "Producto [k=" + k + ", nombre=" + nombre + ", precio=" + precio + ", stock=" + stock + "]";
 	}
-	
-	
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + k;
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Producto other = (Producto) obj;
+		if (k != other.k)
+			return false;
+		
+		return true;
+	}
 	
 	
 	

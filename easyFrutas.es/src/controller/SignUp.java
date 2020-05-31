@@ -58,6 +58,7 @@ public class SignUp extends HttpServlet {
 				conn.disconnect();
 				request.setAttribute("nombre", request.getParameter("nombre"));
 				request.setAttribute("apellido", request.getParameter("apellido"));
+				
 				rd = request.getRequestDispatcher("/RegistroOK.jsp");
 				rd.forward(request, response);
 				System.out.println("imprime despues de fordward?");

@@ -11,7 +11,7 @@ public class DbConnection {
 	static String login = "di3go";
 	static String password = "hola";
 	static String zonaHoraria = "?serverTimezone=" + TimeZone.getDefault().getID();
-	static String url = "jdbc:mysql://localhost/" + db + zonaHoraria;
+	static String url = "jdbc:mysql://localhost/" + db+ zonaHoraria;
 
 	Connection conn = null;
 
@@ -21,7 +21,9 @@ public class DbConnection {
 			conn = DriverManager.getConnection(url, login, password);
 
 			if (conn != null)
-				System.out.println("connection with database [" + db + "] OK");
+				System.err.println("connection with database [" + db + "] OK");
+			else 
+				System.out.println("mala conex");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

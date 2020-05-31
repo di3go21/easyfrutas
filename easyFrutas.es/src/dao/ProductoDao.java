@@ -21,6 +21,7 @@ public class ProductoDao {
 		
 		List<Producto> lista=new ArrayList<Producto>();
 		String sql="select * from eproducto";
+		
 		try {
 			PreparedStatement ps= this.conn.getConnection().prepareStatement(sql);
 			ResultSet rs=ps.executeQuery();
