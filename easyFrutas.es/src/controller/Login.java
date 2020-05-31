@@ -74,6 +74,7 @@ public class Login extends HttpServlet {
 			session.setAttribute("userLoged", user);
 			session.setAttribute("carrito", new Carrito());
 			
+			//loco
 			
 			reqdis = request.getRequestDispatcher("ControladorPrincipal");
 			reqdis.forward(request, response);
