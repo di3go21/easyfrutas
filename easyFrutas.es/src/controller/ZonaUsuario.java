@@ -59,7 +59,7 @@ public class ZonaUsuario extends HttpServlet {
 			request.getRequestDispatcher("/verCarrito.jsp").forward(request, response);
 		
 		
-		
+		//s
 	}
 	
 	
