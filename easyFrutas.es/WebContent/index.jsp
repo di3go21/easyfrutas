@@ -20,8 +20,7 @@
 					<c:choose>
 						<c:when test="${userLoged.getK() > '0' }">
 							<li><a href="Login?action=logout">log OUT</a></li>
-							<li><a href="#">carrito!</a></li>
-							<li><a href="#">area personal!</a></li>
+							<li><a href="ZonaUsuario?accion=personal">area personal!</a></li>
 						</c:when>
 						<c:otherwise>
 							<li><a href="Login?action=login">Log In</a></li>

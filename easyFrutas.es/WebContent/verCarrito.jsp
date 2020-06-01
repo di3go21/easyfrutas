@@ -18,7 +18,7 @@
 			<c:if test="${entry.key==producto.getK()}">
 
 				<p>producto ${producto.getNombre()} cantidad ${entry.value} kg
-					precio (${(Math.floor(producto.getPrecio()*entry.value*100))/100})</p>
+					precio ${(Math.floor(producto.getPrecio()*entry.value*100))/100}</p>
 			</c:if>
 		</c:forEach>
 

@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.CarritoDao;
 import dao.DbConnection;
+import dao.UsuarioDao;
 import model.Carrito;
 import model.Usuario;
 
@@ -56,18 +56,26 @@ public class ZonaUsuario extends HttpServlet {
 				request.getSession().setAttribute("carrito", carrito);
 
 			}
-
-			CarritoDao carDao = new CarritoDao(new DbConnection());
 			if ((request.getSession().getAttribute("userLoged")) != null) {
+
+				DbConnection conn = new DbConnection();
+				CarritoDao carDao = new CarritoDao(conn);
 				int idUsuario = Integer.valueOf(((Usuario) request.getSession().getAttribute("userLoged")).getK());
 
 				carDao.guardaCarrito(carrito, idUsuario);
+				conn.disconnect();
+				
 			}
-
+			
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 
-		} else if (accion.contentEquals("verCarrito"))
+		} else if (accion.contentEquals("verCarrito")) {
 			request.getRequestDispatcher("/verCarrito.jsp").forward(request, response);
+		} else if (accion.contentEquals("personal")) {
+			request.getRequestDispatcher("/personal.jsp").forward(request, response);
+		} else if (accion.contentEquals("modificarDatos")) {
+			request.getRequestDispatcher("/modificarDatos.jsp").forward(request, response);
+		}
 
 	}
 
@@ -77,8 +85,26 @@ public class ZonaUsuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		if (request.getParameter("accion").contentEquals("actualizaDatos")) {
+			Usuario user = (Usuario) request.getSession().getAttribute("userLoged");
+			user.setNombre(request.getParameter("nombre"));
+			user.setApellido(request.getParameter("apellido"));
+			user.setDireccion(request.getParameter("direccion"));
+			user.setTelefono(request.getParameter("telefono"));
+			request.getSession().setAttribute("userLoged", user);
+			
+			DbConnection conn = new DbConnection();
+			UsuarioDao usuDao = new UsuarioDao(conn);
+			usuDao.actualizaUsuario(user);
+			conn.disconnect();
+			
+			
+		}
+		
+		
+		
+		request.getRequestDispatcher("/modificacionOK.jsp").forward(request, response);
 	}
 
 }

@@ -26,6 +26,9 @@ public class UsuarioDao {
 			user.setNombre(rs.getString(2));
 			user.setApellido(rs.getString(3));
 			user.setEmail(email);
+			user.setDireccion(rs.getString(6));
+			user.setTelefono(rs.getString(7));
+			user.setFechaReg(rs.getString(8));
 			return user;
 			}
 			else {
@@ -81,6 +84,26 @@ String sql = "insert into eusuario (asnombre,asapeliido,asemail,ascontrasenia,as
 			e.printStackTrace();
 		}	
 		
+		
+	}
+
+	public void actualizaUsuario(Usuario usu) {
+		String sql ="update eusuario set asnombre=?, asapeliido=?, asdireccion=?, astelefono=? where k=?";
+		try {
+			PreparedStatement ps =conn.getConnection().prepareStatement(sql);
+			ps.setString(1, usu.getNombre());
+			ps.setString(2, usu.getApellido());
+			ps.setString(3, usu.getDireccion());
+			ps.setString(4, usu.getTelefono());
+
+			ps.setInt(5, usu.getK());
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			System.out.println("error al actualizar usuario");
+			e.printStackTrace();
+		}	
 		
 	}
 
