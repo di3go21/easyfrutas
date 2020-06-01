@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import dao.CarritoDao;
 import dao.DbConnection;
 import dao.UsuarioDao;
 import model.Carrito;
+import model.Compra;
 import model.Usuario;
 
 /**
@@ -64,29 +66,52 @@ public class ZonaUsuario extends HttpServlet {
 
 				carDao.guardaCarrito(carrito, idUsuario);
 				conn.disconnect();
-				
+
 			}
-			
+
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 		} else if (accion.contentEquals("verCarrito")) {
 			request.getRequestDispatcher("/verCarrito.jsp").forward(request, response);
+			
 		} else if (accion.contentEquals("personal")) {
+			DbConnection conn=new DbConnection();
+			UsuarioDao usuDao = new UsuarioDao(conn);
+			ArrayList<Compra> compras= new ArrayList<Compra>();
+			Usuario user=(Usuario)request.getSession().getAttribute("userLoged");
+			compras = usuDao.getComprasSimple(user.getK());
+			request.getSession().setAttribute("compras", compras);				
+
 			request.getRequestDispatcher("/personal.jsp").forward(request, response);
-		} else if (accion.contentEquals("modificarDatos")) {
+		}  else if(accion.contentEquals("verCompra")) {
+			DbConnection conn=new DbConnection();
+			UsuarioDao usuDao = new UsuarioDao(conn);
+			System.out.println(Integer.valueOf(request.getParameter("id")));
+			Compra compra = usuDao.getCompra(Integer.valueOf(request.getParameter("id")));
+			compra.setFecha(request.getParameter("fecha"));
+			compra.setHora(request.getParameter("hora"));
+			compra.setId(Integer.valueOf(request.getParameter("id")));
+			compra.setPrecio(Double.valueOf(request.getParameter("precio")));
+			request.setAttribute("compra", compra);
+			request.getRequestDispatcher("/infoCompra.jsp").forward(request, response);
+		}
+		
+		
+		
+		else if (accion.contentEquals("modificarDatos")) {
 			request.getRequestDispatcher("/modificarDatos.jsp").forward(request, response);
 		} else if (accion.contentEquals("preCompra")) {
 			request.getRequestDispatcher("/preCompra.jsp").forward(request, response);
 		} else if (accion.contentEquals("okCompra")) {
-			
+
 			DbConnection conn = new DbConnection();
 			CarritoDao cartDao = new CarritoDao(conn);
-			carrito= (Carrito)request.getSession().getAttribute("carrito");
-			int k = ((Usuario)request.getSession().getAttribute("userLoged")).getK();
-			cartDao.procesaCompra(carrito,k);
-						
-			request.getSession().setAttribute("carrito",new Carrito());
-			
+			carrito = (Carrito) request.getSession().getAttribute("carrito");
+			int k = ((Usuario) request.getSession().getAttribute("userLoged")).getK();
+			cartDao.procesaCompra(carrito, k);
+
+			request.getSession().setAttribute("carrito", new Carrito());
+
 			request.getRequestDispatcher("/compraOK.jsp").forward(request, response);
 		}
 
@@ -98,7 +123,7 @@ public class ZonaUsuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		if (request.getParameter("accion").contentEquals("actualizaDatos")) {
 			Usuario user = (Usuario) request.getSession().getAttribute("userLoged");
 			user.setNombre(request.getParameter("nombre"));
@@ -106,17 +131,14 @@ public class ZonaUsuario extends HttpServlet {
 			user.setDireccion(request.getParameter("direccion"));
 			user.setTelefono(request.getParameter("telefono"));
 			request.getSession().setAttribute("userLoged", user);
-			
+
 			DbConnection conn = new DbConnection();
 			UsuarioDao usuDao = new UsuarioDao(conn);
 			usuDao.actualizaUsuario(user);
 			conn.disconnect();
-			
-			
+
 		}
-		
-		
-		
+
 		request.getRequestDispatcher("/modificacionOK.jsp").forward(request, response);
 	}
 

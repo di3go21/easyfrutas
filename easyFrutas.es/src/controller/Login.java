@@ -73,7 +73,7 @@ public class Login extends HttpServlet {
 		conn.disconnect();
 		if (user != null) {
 			session.setAttribute("userLoged", user);
-			
+			session.setAttribute("idUsuario", user.getK());
 			conn= new DbConnection();
 			CarritoDao cartDao = new CarritoDao(conn);
 			Carrito cart= cartDao.recuperaCarrito(user.getK());
