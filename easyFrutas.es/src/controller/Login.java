@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
+import dao.CarritoDao;
 import dao.DbConnection;
 import dao.ProductoDao;
 import dao.UsuarioDao;
@@ -72,16 +73,22 @@ public class Login extends HttpServlet {
 		conn.disconnect();
 		if (user != null) {
 			session.setAttribute("userLoged", user);
-			session.setAttribute("carrito", new Carrito());
 			
-			//loco
+			conn= new DbConnection();
+			CarritoDao cartDao = new CarritoDao(conn);
+			Carrito cart= cartDao.recuperaCarrito(user.getK());
 			
-			reqdis = request.getRequestDispatcher("ControladorPrincipal");
+			
+			session.setAttribute("carrito", cart);
+			conn.disconnect();
+			
+			
+			reqdis = request.getRequestDispatcher("/index.jsp");
 			reqdis.forward(request, response);
 		} else {
 			String msg = "Email o contraseña incorrecto";
 			request.setAttribute("logFailed", msg);
-			reqdis = request.getRequestDispatcher("/Login.jsp");
+			reqdis = request.getRequestDispatcher("/index.jsp");
 			reqdis.forward(request, response);
 
 		}
