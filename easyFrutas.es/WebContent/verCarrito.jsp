@@ -18,7 +18,7 @@
 			<c:if test="${entry.key==producto.getK()}">
 
 				<p>producto ${producto.getNombre()} cantidad ${entry.value} kg
-					precio ${(Math.floor(producto.getPrecio()*entry.value*100))/100}</p>
+					precio ${Numero.dosDecimales(producto.getPrecio()*entry.value)}</p>
 			</c:if>
 		</c:forEach>
 
@@ -28,6 +28,10 @@
 	<c:if test="${empty userLoged.getK()}">
 		Logueate para recuperar tu antiguo carrito!
 	</c:if>
+	
+	
+	
+<button onclick="window.location.href='ZonaUsuario?accion=preCompra'">ir a precompra</button>
 
 
 </body>

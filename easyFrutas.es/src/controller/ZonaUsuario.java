@@ -75,6 +75,19 @@ public class ZonaUsuario extends HttpServlet {
 			request.getRequestDispatcher("/personal.jsp").forward(request, response);
 		} else if (accion.contentEquals("modificarDatos")) {
 			request.getRequestDispatcher("/modificarDatos.jsp").forward(request, response);
+		} else if (accion.contentEquals("preCompra")) {
+			request.getRequestDispatcher("/preCompra.jsp").forward(request, response);
+		} else if (accion.contentEquals("okCompra")) {
+			
+			DbConnection conn = new DbConnection();
+			CarritoDao cartDao = new CarritoDao(conn);
+			carrito= (Carrito)request.getSession().getAttribute("carrito");
+			int k = ((Usuario)request.getSession().getAttribute("userLoged")).getK();
+			cartDao.procesaCompra(carrito,k);
+						
+			request.getSession().setAttribute("carrito",new Carrito());
+			
+			request.getRequestDispatcher("/compraOK.jsp").forward(request, response);
 		}
 
 	}

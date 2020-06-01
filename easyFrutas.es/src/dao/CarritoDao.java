@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import model.Carrito;
+import util.Fecha;
+import util.Hora;
 
 public class CarritoDao {
 
@@ -63,6 +65,50 @@ public class CarritoDao {
 		}
 
 	}
+
+	public void procesaCompra(Carrito carrito, int k) {
+		
+		String insertV=" insert into eventa (xusuario,afpreciototal,adfecha,athora) values (?,?,?,?)";
+		String insertER="insert into erventaproducto values ((select k from eventa where adfecha=? and athora=?),?,?,(?*(select afprecioKG from eproducto where k=?)))";
+		String delete = "delete from ecarrito  where xusuario=?";
 	
+		try {
+			PreparedStatement ps = this.conn.getConnection().prepareStatement(insertV);
+			PreparedStatement ps2 = this.conn.getConnection().prepareStatement(insertER);
+			PreparedStatement ps3= this.conn.getConnection().prepareStatement(delete);
+			String hora=Hora.horaActual();
+			ps.setInt(1, k);
+			ps.setDouble(2, carrito.getTotal());
+			ps.setString(3, Fecha.fechaActual());
+			ps.setString(4, hora);
+			ps.execute();
+			
+			for (Map.Entry<Integer, Double> entry : carrito.getCarrito().entrySet()) {
+				ps2.setString(1, Fecha.fechaActual());
+				ps2.setString(2,hora);
+				ps2.setInt(3, entry.getKey());
+				ps2.setDouble(4,entry.getValue());
+				ps2.setDouble(5,entry.getValue());
+				ps2.setDouble(5,entry.getValue());
+				ps2.setInt(6,entry.getKey());
+				ps2.execute();
+			}
+			ps3.setInt(1, k);
+			ps3.execute();
+			
+			ps3.close();
+			ps2.close();
+			ps.close();
+		
+
+			
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
 
 }

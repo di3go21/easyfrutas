@@ -1,6 +1,14 @@
 package model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
+
+
+import dao.DbConnection;
+import util.Numero;
 
 public class Carrito {
 
@@ -44,6 +52,33 @@ public class Carrito {
 		this.carrito = new HashMap<Integer, Double>();
 
 	}
+	public Double getTotal() {
+		DbConnection conn = new DbConnection();
+		double total=0.0;
+		double precioUni=0.0;
+		String precio="select afprecioKG from eproducto where k=?";
+		try {
+			PreparedStatement ps = conn.getConnection().prepareStatement(precio);
+			ResultSet rs=null;
+			
+			for (Map.Entry<Integer, Double> entry : this.getCarrito().entrySet()) {
+				ps.setInt(1, entry.getKey());
+				rs= ps.executeQuery();
+				rs.next();
+				precioUni=rs.getDouble(1);
+				total+=precioUni*entry.getValue();
+			}
+			rs.close();
+			ps.close();
+			conn.disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return Numero.dosDecimales(total);
+	}
 
+	
 
 }
