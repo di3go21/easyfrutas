@@ -66,7 +66,7 @@ public class Carrito {
 				rs= ps.executeQuery();
 				rs.next();
 				precioUni=rs.getDouble(1);
-				total+=precioUni*entry.getValue();
+				total+= Numero.dosDecimales(precioUni*entry.getValue());
 			}
 			rs.close();
 			ps.close();
