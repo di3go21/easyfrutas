@@ -69,7 +69,7 @@ public class CarritoDao {
 	public void procesaCompra(Carrito carrito, int k) {
 		
 		String insertV=" insert into eventa (xusuario,afpreciototal,adfecha,athora) values (?,?,?,?)";
-		String insertER="insert into erventaproducto values ((select k from eventa where adfecha=? and athora=?),?,?,(?*(select afprecioKG from eproducto where k=?)))";
+		String insertER="insert into erventaproducto values ((select k from eventa where adfecha=? and athora=?),?,?,round((?*(select afprecioKG from eproducto where k=?)),2))";
 		String delete = "delete from ecarrito  where xusuario=?";
 	
 		try {

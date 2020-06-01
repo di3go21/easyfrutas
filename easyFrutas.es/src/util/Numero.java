@@ -27,7 +27,7 @@ public class Numero {
 
 
 	public static void main(String[] args) {
-		double a=0.995;
+		double a=0.993;
 		
 		System.out.println(dosDecimales(a,1));
 		
