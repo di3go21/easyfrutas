@@ -46,7 +46,7 @@ public class Venta {
 	public void actualizaPrecioTotal() {
 		double total = 0;
 		for (Articulo articulo : listaArt) {
-			total += articulo.getPrecio();
+			total += articulo.getCoste();
 		}
 		this.preciototal = total;
 	}
